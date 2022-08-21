@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>ZingSoft Demo</title>
+  <script nonce="undefined" src="https://cdn.zingchart.com/zingchart.min.js"></script>
+  <script nonce="undefined">
+    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
+  </script>
+
+  <script nonce="undefined" src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous">
+  </script>
+
+  <script nonce="undefined" src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/374756/simpsons.js'></script>
+  <style>
+    html,
+    body {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #myChart {
+      height: 100%;
+      width: 100%;
+      min-height: 150px;
+    }
+
+    .zc-ref {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="myChart"></div>
+  <script>
+    const major00 = [
+            'https://upload.wikimedia.org/wikipedia/commons/5/58/Tarot_Belgijski_-_A22_-_G%C5%82upiec.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/5/58/impulsive.jpg',
+            'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/RWS_Tarot_01_Magician.jpg/340px-RWS_Tarot_01_Magician.jpg',
+    ]
+  </script>
+  <script>
+    const imgArr = major00;
+    const createNode = ( name, keyword, img ) =>
+    {
+      return {
+        name: name,
+        keyword: keyword,
+        img: img,
+        children: []
+      }
+    }
+  </script>
+
+  <!--    https://youtu.be/HVFak8SS_CM?t=28-->
+  <script>
+
+    const impulsive = createNode( 'Impulsive', 'Impulsive', imgArr[1] )
+    const wildCard = createNode( 'Wild Card', 'Wild Card', imgArr[1] )
+    const careFree = createNode( 'Care Free', 'Care Free', imgArr[1] )
+    const aimless = createNode( 'Aimless', 'Aimless', imgArr[1] )
+    {
+      const detached = createNode( 'Detached', 'Detached', imgArr[1] )
+      const reluctance = createNode( 'Reluctance', 'Reluctance', imgArr[1] )
+      const uncaring = createNode( 'Uncaring', 'Uncaring', imgArr[1] )
+      const unpredictable = createNode( 'Unpredictable', 'Unpredictable', imgArr[1] )
+      impulsive.children.push( {detached: detached} );
+      impulsive.children.push( {reluctance: reluctance} );
+      impulsive.children.push( {uncaring: uncaring} );
+      impulsive.children.push( {unpredictable: unpredictable} );
+
+      const individuality = createNode( 'Individuality', 'Individuality', imgArr[1] )
+      const variables = createNode( 'Variables', 'Variables', imgArr[1] )
+      const nonConforming = createNode( 'Non-conforming', 'Non-conforming', imgArr[1] )
+      const creative = createNode( 'Creative', 'Creative', imgArr[1] )
+
+      wildCard.children.push({individuality: individuality})
+      wildCard.children.push({variables: variables})
+      wildCard.children.push({nonConforming: nonConforming})
+      wildCard.children.push({creative: creative})
+
+      const freeSpirit = createNode( 'Free Spirit', 'Free Spirit', imgArr[1] )
+      const dreamer = createNode( 'Dreamer', 'Dreamer', imgArr[1] )
+      const hopeful = createNode( 'Hopeful', 'Hopeful', imgArr[1] )
+      const unrestricted = createNode( 'Unrestricted', 'Unrestricted', imgArr[1] )
+
+      careFree.children.push({freeSpirit:freeSpirit})
+      careFree.children.push({dreamer:dreamer})
+      careFree.children.push({hopeful:hopeful})
+      careFree.children.push({unrestricted:unrestricted})
+
+      const spontaneous = createNode( 'Spontaneous', 'Spontaneous', imgArr[1] )
+      const innocence = createNode( 'Innocence', 'Innocence', imgArr[1] )
+      const blindTrust = createNode( 'Blind Trust', 'Blind Trust', imgArr[1] )
+      const liberation = createNode( 'Liberation', 'Liberation', imgArr[1] )
+      aimless.children.push({spontaneous:spontaneous})
+      aimless.children.push({innocence:innocence})
+      aimless.children.push({blindTrust:blindTrust})
+      aimless.children.push({liberation:liberation})
+    }
+
+
+
+    const theFool = createNode( 'The Fool', 'Believing', imgArr[0] );
+    {
+      theFool.children.push( {impulsive:impulsive} );
+      theFool.children.push( {wildCard:wildCard} );
+      theFool.children.push( {careFree:careFree} );
+      theFool.children.push( {aimless:aimless} );
+    }
+
+  </script>
+
+  <!--    https://youtu.be/HVFak8SS_CM?t=28-->
+  <script>
+    const confidence = createNode('Confidence', 'Confidence', imgArr[1])
+    {
+      const swiftAction = createNode('Swift Action', 'Swift Action', imgArr[1])
+      const support = createNode('Support', 'Support', imgArr[1])
+      const influence = createNode('Influence', 'Influence', imgArr[1])
+      const empowering = createNode('Empowering', 'Empowering', imgArr[1])
+      confidence.children.push({swiftAction: swiftAction});
+      confidence.children.push({support: support});
+      confidence.children.push({influence: influence});
+      confidence.children.push({empowering: empowering});
+    }
+
+    const theMagician = createNode( 'The Magician', 'Awareness', imgArr[2] );
+    {
+      theMagician.children.push( {confidence:confidence} );
+    }
+
+  </script>
+
+  <script>
+
+  </script>
+  <script>
+
+    const create_Node = ( node ) =>
+    {
+      node = node[Object.keys(node)[0]];
+
+      const n = {
+                type: 'node',
+                id: node.name,
+                text: node.name,
+                dataFullName: node.keyword,
+                style: {
+                  'background-fit': 'xy',
+                }
+              };
+      if ( node.img )
+      {
+        n.style.backgroundImage = node.img
+      }
+      // console.log( node );
+      return n;
+    }
+    const create_Link = ( parent, child ) =>
+    {
+      parent = parent[Object.keys(parent)[0]];
+      child = child[Object.keys(child)[0]];
+      // console.log( 'parent', parent, 'child', child );
+      return {
+        type: 'link',
+        source: parent.name,
+        target: child.name
+      };
+    }
+
+    const treeNodes = [];
+    const treeLinks = [];
+
+    const traverse = ( parent, obj, level ) =>
+    {
+      if ( level > 3 )
+        return;
+
+      const node = create_Node( obj );
+      treeNodes.push( node );
+      if ( parent )
+      {
+        const link = create_Link( parent, obj );
+        treeLinks.push( link );
+      }
+      Object.keys(obj).map( k => {
+        const o = obj[k];
+        // console.log( o.name, o.img );
+        for ( let i = 0; i < o.children.length; i++ )
+        {
+          traverse( obj, o.children[i], (level+1) );
+        }
+      });
+    }
+
+    const majorArcana = { root: createNode('Major Arcana', 'Major Arcana', 'https://cdn.pixabay.com/photo/2016/11/28/23/55/pentagram-1866328__480.png') };
+    majorArcana.root.children.push( {theFool:theFool} );
+    majorArcana.root.children.push( {theMagician:theMagician} );
+    traverse( null, majorArcana, 0 );
+
+    let treeData = [];
+    treeData = treeData.concat( treeNodes );
+    treeData = treeData.concat( treeLinks );
+    // treeData.push( ...treeLinks );
+    // treeData.map( t => console.log( t ) );
+
+  </script>
+
+  <script>
+    const major = {
+      theFool: {
+        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/RWS_Tarot_00_Fool.jpg/340px-RWS_Tarot_00_Fool.jpg'
+      }
+
+    }
+  </script>
+  <script>
+    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "b55b025e438fa8a98e32482b5f768ff5"];
+
+
+    let chartConfig = {
+      type: 'tree',
+      plot: {},
+      plotarea: {
+        margin: 40,
+        backgroundImage: 'https://cdn.pixabay.com/photo/2017/12/29/10/44/magician-3047235__480.jpg',
+        backgroundFit: 'xy',
+        backgroundRepeat: false,
+      },
+      options: {
+        aspect: 'graph',
+        springLength: 75,
+        attractionConstant: 0.8,
+        repulsionConstant: 4000,
+        repulsionDistanceFactor: 20,
+        node: {
+          size: 24,
+          borderWidth: 3,
+          borderColor: 'white',
+          backgroundColor: '#fff',
+          backgroundRepeat: 'no-repeat',
+          backgroundScale: 0.75,
+          label: {
+            color: 'white',
+            fontWeight: 'bold',
+            offsetY: 35
+          },
+          tooltip: {
+            text: '%data-full-name',
+            visible: true,
+          }
+        },
+        'node[cls-fam]': {
+          size: 12,
+          borderWidth: 2,
+          borderColor: '#000',
+          backgroundColor: 'white',
+          label: {
+            visible: false
+          }
+        },
+        link: {
+          lineWidth: 3,
+          lineColor: 'white'
+        }
+      },
+      // series: chartData
+      series: treeData
+    };
+
+    zingchart.render({
+      id: 'myChart',
+      width: 1000,
+      height: 800,
+      output: 'canvas',
+      data: chartConfig
+    });
+  </script>
+</body>
+
+</html>

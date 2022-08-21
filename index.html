@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.5.2/ethers.umd.min.js" integrity="sha512-PtOcu3WZTldHT+VjAJdWV5ss+iGebEgc1h5olJuxUNPvKuC0VOZsk1UhNgQYi5oIyrNHhdIOw8WQMdZwBv1MyQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+    <script src="ethers.umd.min.js" integrity="sha512-PtOcu3WZTldHT+VjAJdWV5ss+iGebEgc1h5olJuxUNPvKuC0VOZsk1UhNgQYi5oIyrNHhdIOw8WQMdZwBv1MyQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+
+<h1>Count: <span id="count">?</span></h1>
+
+<button id="increase">+</button>
+<button id="decrease">-</button>
+
+<script>
+    const countSpan = document.getElementById("count");
+    const buttonIncrease = document.getElementById("increase");
+    const buttonDecrease = document.getElementById("decrease");
+</script>
+<script>
+    const address = "0xc05FfE2f23e68e96943BD2c9b9260564a4f054A7";
+
+    const abi = [
+        {
+            "anonymous": false,
+            "inputs": [
+                {
+                    "indexed": false,
+                    "internalType": "string",
+                    "name": "method",
+                    "type": "string"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "uint256",
+                    "name": "count",
+                    "type": "uint256"
+                },
+                {
+                    "indexed": false,
+                    "internalType": "address",
+                    "name": "caller",
+                    "type": "address"
+                }
+            ],
+            "name": "Count",
+            "type": "event"
+        },
+        {
+            "inputs": [],
+            "name": "count",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "constant": true
+        },
+        {
+            "inputs": [],
+            "name": "increase",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "decrease",
+            "outputs": [],
+            "stateMutability": "nonpayable",
+            "type": "function"
+        },
+        {
+            "inputs": [],
+            "name": "getCount",
+            "outputs": [
+                {
+                    "internalType": "uint256",
+                    "name": "",
+                    "type": "uint256"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function",
+            "constant": true
+        }
+    ];
+
+    if (window.ethereum) {
+
+        ethereum.request({ method: "eth_requestAccounts" })
+            .then(() => countSpan.click())
+            .catch((err) => console.error(err.message));
+
+        ethereum.on("chainChanged", () => window.location.reload());
+
+        ethereum.on("accountsChanged", (accounts) => {
+            if (accounts.length > 0) {
+                console.log(`Using account ${accounts[0]}`);
+            } else {
+                console.error("0 accounts.");
+            }
+        });
+
+        ethereum.on("message", (message) => console.log(message));
+
+        ethereum.on("connect", (info) => {
+            console.log(`Connected to network ${info}`, info);
+            console.log(info);
+        });
+
+        ethereum.on("disconnect", (error) => {
+            console.log(`Disconnected from network ${error}`);
+        });
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+        const signer = provider.getSigner();
+
+        const contract = new ethers.Contract(address, abi, signer);
+
+        countSpan.onclick = function ()
+        {
+            contract.getCount().then((count) => document.getElementById("count").innerText = String(count))
+                .catch((err) => console.error(err));
+
+        };
+
+        contract.on("Count", (method, count, caller) => {
+            console.log("Event occured from smart contract: ", method, count, caller);
+        });
+
+        buttonIncrease.onclick = function () {
+
+            contract.increase()
+                .then((tx) => {
+                    console.log("Transaction occured: ", tx.hash);
+                    return tx.wait().then(() => {
+
+                        contract.getCount().then((count) => document.getElementById("count").innerText = String(count))
+
+                        console.log("Increased count");
+
+                    }).catch((err) => console.error(err.message));
+                })
+                .catch((err) => console.error(err.message));
+        }
+
+        buttonDecrease.onclick = function () {
+
+            contract.decrease()
+                .then((tx) => {
+                    console.log("Transaction occured: ", tx.hash);
+                    return tx.wait().then(() => {
+
+                        contract.getCount().then((count) => document.getElementById("count").innerText = String(count))
+
+                        console.log("Decreased count");
+
+                    }).catch((err) => console.error(err.message));
+                })
+                .catch((err) => console.error(err.message));
+        }
+
+    } else {
+        console.error("Install MetaMask.");
+    }
+
+
+</script>
+
+</body>
+</html>
